@@ -23,7 +23,7 @@ export const renderer = jsxRenderer(({ children }) => {
   `
 })
 
-export const AddTodo = () => (
+export const AddTodo: FC = () => (
   <form hx-post="/todo" hx-target="#todo" hx-swap="beforebegin" _="on htmx:afterRequest reset() me" class="mb-4">
     <div class="mb-2">
       <input name="title" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5" />
@@ -34,7 +34,12 @@ export const AddTodo = () => (
   </form>
 )
 
-export const Item = ({ title, id }: { title: string; id: string }) => (
+type ItemProps = {
+  title: string;
+  id: string;
+}
+
+export const Item: FC<ItemProps> = ({ title, id }) => (
   <p
     hx-delete={`/todo/${id}`}
     hx-swap="outerHTML"
@@ -54,32 +59,48 @@ type Message = {
 
 type Talk = {
   partner: string;
-  messages: Message[]
+  messages: Message[];
 }
 
+type TalkEmulatorProps = {
+  talk?: Talk;
+}
 
-export const TalkEmulator: FC<{ talk: Talk }> = ({ talk }) => {
+export const TalkEmulator: FC<TalkEmulatorProps> = ({ talk }) => {
   return (
     <div class="max-w-md mx-auto mt-8 p-4 bg-gray-100 rounded-lg">
-      <form hx-post="/parse" hx-target="#messages" enctype="multipart/form-data">
-        <input type="file" name="talkFile" accept=".txt" required />
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-          パース
-        </button>
-      </form>
-      <div id="messages" class="mt-4">
-        {talk?.messages.map((message, index) => (
-          <MessageItem
-            key={`${message.date}${message.time}${message.sender}${message.content}`}
-            {...message} 
-            partner={talk.partner} 
-            isFirst={index === 0 || message.date !== talk.messages[index - 1].date}
-          />
-        ))}
-      </div>
+      <FileUploadForm />
+      <MessageList talk={talk} />
     </div>
   )
 }
+
+const FileUploadForm: FC = () => (
+  <form hx-post="/parse" hx-target="#messages" enctype="multipart/form-data">
+    <input type="file" name="talkFile" accept=".txt" required />
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+      パース
+    </button>
+  </form>
+)
+
+type MessageListProps = {
+  talk?: Talk;
+}
+
+const MessageList: FC<MessageListProps> = ({ talk }) => (
+  <div id="messages" class="mt-4">
+    {talk?.messages.map((message, index) => (
+      <MessageItem
+        key={`${message.date}${message.time}${message.sender}${message.content}`}
+        {...message} 
+        partner={talk.partner} 
+        isFirst={index === 0 || message.date !== talk.messages[index - 1].date}
+      />
+    ))}
+  </div>
+)
+
 type MessageItemProps = {
   date: string;
   time: string;
@@ -89,25 +110,43 @@ type MessageItemProps = {
   isFirst: boolean;
 }
 
-export const MessageItem: FC<MessageItemProps> = ({ date, time, sender, content, partner, isFirst }) => {
-  const isMine = !(partner === sender)
+const getFormattedDate = (date: string) => {
+  const [year, month, day] = date.split('/');
+  return `${year}年${month}月${day}日`;
+};
 
-  const getFormattedDate = (date: string) => {
-    const [year, month, day] = date.split('/');
-    return `${year}年${month}月${day}日`;
-  };
+export const MessageItem: FC<MessageItemProps> = ({ date, time, sender, content, partner, isFirst }) => {
+  const isMine = partner !== sender;
+
   return (
     <>
-      {isFirst && (
-        <div class="date-label">
-          {getFormattedDate(date)}
-        </div>
-      )}
-      <div class={`mb-4 ${isMine ? 'ml-auto w-1/2' : 'mr-auto w-1/2'}`}>
-        <div class={`font-bold ${isMine ? 'text-right' : 'text-left'}`}>{sender}</div>
-        <div class={`p-2 rounded-lg shadow ${isMine ? 'bg-[#acc764]' : 'bg-white'}`}>{content}</div>
-        <div class={`text-xs text-gray-500 ${isMine ? 'text-right' : 'text-left'}`}>{time}</div>
-      </div>
+      {isFirst && <DateLabel date={date} />}
+      <MessageContent isMine={isMine} sender={sender} content={content} time={time} />
     </>
   )
 }
+
+type DateLabelProps = {
+  date: string;
+}
+
+const DateLabel: FC<DateLabelProps> = ({ date }) => (
+  <div class="date-label">
+    {getFormattedDate(date)}
+  </div>
+)
+
+type MessageContentProps = {
+  isMine: boolean;
+  sender: string;
+  content: string;
+  time: string;
+}
+
+const MessageContent: FC<MessageContentProps> = ({ isMine, sender, content, time }) => (
+  <div class={`mb-4 ${isMine ? 'ml-auto w-1/2' : 'mr-auto w-1/2'}`}>
+    <div class={`font-bold ${isMine ? 'text-right' : 'text-left'}`}>{sender}</div>
+    <div class={`p-2 rounded-lg shadow ${isMine ? 'bg-[#acc764]' : 'bg-white'}`}>{content}</div>
+    <div class={`text-xs text-gray-500 ${isMine ? 'text-right' : 'text-left'}`}>{time}</div>
+  </div>
+)

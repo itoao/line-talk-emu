@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { renderer, AddTodo, Item, TalkEmulator } from './components'
+import { renderer, TalkEmulator } from './components'
 import { parseTalkTxt } from './parser'
 
 type Bindings = {
