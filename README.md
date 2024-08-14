@@ -1,4 +1,4 @@
-# Todo Example
+# LINEトーク履歴バックアップアプリ
 
 Stack:
 
@@ -41,11 +41,3 @@ Deploy:
 ```
 npm run deploy
 ```
-
-## Author
-
-Yusuke Wada
-
-## License
-
-MIT
