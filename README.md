@@ -21,6 +21,11 @@ Setup:
 
 ```
 wrangler d1 create todo
+
+# ローカルでSQL実行
+wrangler d1 execute todo --local --file=todo.sql
+
+# リモートでSQL実行
 wrangler d1 execute todo --local --file=todo.sql
 ```
 
