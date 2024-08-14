@@ -131,7 +131,7 @@ type DateLabelProps = {
 }
 
 const DateLabel: FC<DateLabelProps> = ({ date }) => (
-  <div class="date-label">
+  <div class="text-center my-5 font-bold text-gray-500">
     {getFormattedDate(date)}
   </div>
 )
