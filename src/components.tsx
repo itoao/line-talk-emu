@@ -14,22 +14,20 @@ export const renderer = jsxRenderer(({ children }) => {
         <script src="https://cdn.tailwindcss.com"></script>
         <title>LINEトーク履歴バックアップ</title>
         <style>
+          html, body {
+            width: 100%;
+            overflow-x: hidden;
+          }
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+          }
           @media (max-width: 640px) {
             html {
               font-size: 14px;
             }
           }
-          body {
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100vw;
-          }
-          * {
-            box-sizing: border-box;
-          }
-            * {
-  outline: 2px solid blue;
-}
         </style>
       </head>
       <body class="text-base">
