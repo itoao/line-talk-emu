@@ -146,7 +146,7 @@ const MessageContent: FC<MessageContentProps> = ({ isMine, sender, content, time
 export const Header: FC = () => {
   return (
     <header class="flex justify-between items-center p-4 bg-gray-200">
-      <h1 class="font-bold mb-4">
+      <h1 class="font-bold mb-4 text-xl">
         <a href="/">
           LINEトーク履歴バックアップ
         </a>
@@ -177,7 +177,7 @@ export const TalkList: FC<TalkListProps> = ({ talks }) => {
   return (
     <div id="talk-list" class="p-4">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">バックアップされたトーク</h2>
+        <h3 class="text-lg font-semibold">バックアップされたトーク</h3>
         <button
           hx-get="/add-talk-dialog"
           hx-target="body"
