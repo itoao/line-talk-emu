@@ -1,6 +1,6 @@
 # LINEトーク履歴バックアップアプリ
-![line-talk-emu workers dev_](https://github.com/user-attachments/assets/269fdb4f-c3a1-4d71-94e6-ec13137c90a9)
 
+<img src="https://github.com/user-attachments/assets/269fdb4f-c3a1-4d71-94e6-ec13137c90a9" width="1200">
 Stack:
 
 * Hono
