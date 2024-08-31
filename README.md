@@ -1,4 +1,4 @@
-# LINE Talk History Backup App
+# LINE Talk History Backup App ♻️
 
 <img src="https://github.com/user-attachments/assets/269fdb4f-c3a1-4d71-94e6-ec13137c90a9" width="800">
 Stack:
